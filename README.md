@@ -41,9 +41,8 @@ O CodeDiff Pro é uma ferramenta online que permite comparar dois trechos de có
   
   <div style="display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin: 25px 0;">
     <img src="https://skillicons.dev/icons?i=github" alt="GitHub" title="GitHub" width="50">
+    <img src="https://skillicons.dev/icons?i=git" alt="VS Code" title="Git" width="50">
     <img src="https://skillicons.dev/icons?i=vscode" alt="VS Code" title="VS Code" width="50">
-    <img src="https://avatars.githubusercontent.com/u/6128107?s=200&v=4" alt="Lucide Icons" title="Lucide Icons" width="50" style="border-radius:50%">
-    <img src="https://camo.githubusercontent.com/6a46c3b24be5b6e9f1b0a2a0d9e3c9e0e1e0e1e0e/68747470733a2f2f6a73646966662e6769746875622e696f2f6a73646966662f6c6f676f2e706e67" alt="jsdiff" title="jsdiff" width="50">
   </div>
 </div>
 
