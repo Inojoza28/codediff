@@ -65,6 +65,10 @@
             border-radius: var(--border-radius-xl);
             box-shadow: var(--shadow-xl);
         }
+
+        .card:focus-within {
+            border-color:#6365f17a !important; 
+        }
         
         .button-primary {
             background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
