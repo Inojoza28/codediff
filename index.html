@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Meta Tags para SEO e Informações da Página -->
+    <meta name="author" content="Gabriel Inojoza">
+    <meta name="description" content="Uma ferramenta online, moderna e intuitiva para comparar dois trechos de código. Detecte e visualize diferenças (adições e remoções) de forma rápida e clara.">
+    <meta name="keywords" content="comparador de código, diff tool, comparação de texto, desenvolvedor, ferramenta de código, html, css, javascript, code diff, code comparison, developer tool">
+    <link rel="icon" href="public/assets/logo.png">
+    <link rel="stylesheet" href="public/css/style.css">
+    <title>CodeDiff Pro | Comparador de Código Inteligente</title>
+    
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Biblioteca de Diff (jsdiff) via CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/diff@5.1.0/dist/diff.min.js"></script>
+    
+    <!-- Google Fonts (JetBrains Mono & Inter) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Ícones (Lucide via CDN) -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="sticky top-0 z-50 w-full backdrop-blur-xl bg-black/20 border-b border-gray-800/50" role="banner">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo -->
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center">
+                        <i data-lucide="code-2" class="w-5 h-5 text-white"></i>
+                    </div>
+                    <span class="text-xl font-bold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
+                        CodeDiff<span class="text-indigo-400">Pro</span>
+                    </span>
+                </div>
+
+                <!-- Navigation -->
+                <nav class="hidden md:flex items-center space-x-6" role="navigation" aria-label="Navegação principal">
+                    <a href="https://githelp.com.br/" target="_blank" rel="noopener" 
+                       class="text-gray-400 hover:text-white transition-colors duration-200 text-sm font-medium focus-visible">
+                        Githelp
+                    </a>
+                    <a href="https://jscode.com.br/" target="_blank" rel="noopener"
+                       class="text-gray-400 hover:text-white transition-colors duration-200 text-sm font-medium focus-visible">
+                        JScode
+                    </a>
+                    <a href="https://github.com/Inojoza28/codediff" target="_blank" rel="noopener noreferrer" 
+                       class="text-gray-400 hover:text-white transition-colors duration-200 focus-visible p-2 -m-2 rounded"
+                       aria-label="Ver perfil no GitHub">
+                        <i data-lucide="github" class="w-5 h-5"></i>
+                    </a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main id="main-content" class="w-full max-w-7xl mx-auto flex-grow flex flex-col p-4 sm:p-6 lg:p-8" role="main">
+        <!-- BLOB superior esquerdo -->
+        <div class="absolute top-[-100px] left-[-100px] w-72 h-72 bg-purple-400 rounded-full blur-3xl opacity-30 z-0"></div>
+
+        <!-- BLOB inferior direito -->
+        <div class="hidden lg:block absolute bottom-[-100px] right-[-100px] w-72 h-72 rounded-full blur-3xl opacity-15 z-0" style="background-color: #4f46e5;"></div>
+
+
+        <!-- Hero Section -->
+        <section class="text-center mb-8 animate-fade-in-up">
+            <h1 class="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-white via-gray-200 to-gray-400 bg-clip-text text-transparent mb-3">
+                Comparador de <span style="color: #6366f1;">&lt;/</span>Código<span style="color: #6366f1;">&gt;</span>
+            </h1>
+            <p class="text-gray-400 text-[15px] sm:text-base max-w-xl mx-auto">
+
+                Compare códigos de forma inteligente com visualização clara das diferenças
+            </p>
+        </section>
+
+
+        <!-- Input Section -->
+        <section class="mb-8 animate-fade-in-up" style="animation-delay: 0.1s;" aria-labelledby="input-section-title">
+            <h2 id="input-section-title" class="text-lg md:text-xl font-semibold text-white mb-6 flex items-center gap-2 text-center md:text-left">
+                <i data-lucide="file-diff" class="w-5 h-5 text-indigo-400"></i>
+                Insira os códigos para comparação
+            </h2>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Original Code -->
+                <div class="card p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <label for="code-before" class="text-sm font-medium text-gray-300 flex items-center gap-2">
+                            <i data-lucide="file-minus" class="w-4 h-4 text-red-400"></i>
+                            Código Original
+                        </label>
+                        <button id="copy-before" type="button" 
+                                class="button-secondary opacity-0 transition-opacity duration-200"
+                                aria-label="Copiar código original">
+                            <i data-lucide="copy" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                    <div class="relative">
+                        <textarea id="code-before" 
+                                  class="input-field font-mono w-full focus-visible"
+                                  placeholder="// Cole seu código original aqui
+function exemplo() {
+    console.log('Hello World');
+}"
+                                  spellcheck="false"
+                                  aria-describedby="code-before-help"></textarea>
+                        <div id="code-before-help" class="sr-only">
+                            Área de texto para inserir o código original que será comparado
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modified Code -->
+                <div class="card p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <label for="code-after" class="text-sm font-medium text-gray-300 flex items-center gap-2">
+                            <i data-lucide="file-plus" class="w-4 h-4 text-green-400"></i>
+                            Código Modificado
+                        </label>
+                        <button id="copy-after" type="button" 
+                                class="button-secondary opacity-0 transition-opacity duration-200"
+                                aria-label="Copiar código modificado">
+                            <i data-lucide="copy" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                    <div class="relative">
+                        <textarea id="code-after" 
+                                  class="input-field font-mono w-full focus-visible"
+                                  placeholder="// Cole seu código modificado aqui
+function exemplo() {
+    console.log('Hello Universe');
+    return true;
+}"
+                                  spellcheck="false"
+                                  aria-describedby="code-after-help"></textarea>
+                        <div id="code-after-help" class="sr-only">
+                            Área de texto para inserir o código modificado que será comparado
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Controls Section -->
+        <section class="mb-8 animate-fade-in-up" style="animation-delay: 0.2s;" aria-labelledby="controls-title">
+            <div class="card p-6 text-center">
+                <h2 id="controls-title" class="sr-only">Controles de comparação</h2>
+                
+                <!-- Options -->
+                <div class="flex items-center justify-center mb-6">
+                    <label class="flex items-center gap-3 cursor-pointer text-gray-300 hover:text-white transition-colors">
+                        <span class="text-sm font-medium">Ignorar espaços e indentação</span>
+                        <div id="ignore-whitespace-toggle" class="toggle-switch focus-visible" role="switch" aria-checked="false" tabindex="0"></div>
+                    </label>
+                </div>
+
+                <!-- Compare Button -->
+                <button id="compare-btn" type="button" class="button-primary focus-visible" disabled aria-describedby="compare-help">
+                    <span id="btn-content" class="flex items-center gap-2">
+                        <i data-lucide="git-compare" class="w-5 h-5"></i>
+                        <span id="btn-text">Comparar Códigos</span>
+                    </span>
+                </button>
+                <div id="compare-help" class="sr-only">
+                    Clique para comparar os códigos inseridos e visualizar as diferenças
+                </div>
+            </div>
+        </section>
+
+        <!-- Results Section -->
+        <section id="result-container" class="hidden animate-slide-in-right" aria-labelledby="results-title">
+            <div class="card">
+                <!-- Results Header -->
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between p-6 border-b border-gray-700/50">
+                    <div class="mb-4 sm:mb-0">
+                        <h2 id="results-title" class="text-lg font-semibold text-white mb-2 flex items-center gap-2">
+                            <i data-lucide="file-diff" class="w-5 h-5 text-indigo-400"></i>
+                            Resultado da Comparação
+                        </h2>
+                        <div id="stats" class="flex flex-wrap gap-2" role="status" aria-live="polite"></div>
+                    </div>
+                    <button id="clear-btn" type="button" class="button-secondary self-start" aria-label="Limpar comparação e recomeçar">
+                        <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
+                        <span>Nova Comparação</span>
+                    </button>
+                </div>
+
+                <!-- Diff Output -->
+                <div class="font-mono text-sm overflow-auto" style="max-height: 70vh;" role="region" aria-label="Diferenças encontradas no código">
+                    <div id="diff-output" class="min-h-[200px]"></div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Botão Scroll-to-Top -->
+    <button id="scrollTopBtn" 
+            title="Voltar ao topo"
+            aria-label="Voltar ao topo"
+            class="hidden fixed bottom-6 right-6 bg-indigo-600/80 hover:bg-indigo-500 text-white w-10 h-10 rounded-full shadow-lg transition-all duration-300 ease-in-out transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-opacity-75">
+        <i data-lucide="arrow-up" class="w-5 h-5 mx-auto"></i>
+    </button>
+
+
+    <!-- Footer -->
+    <footer class="mt-16 py-6 text-center text-gray-500 border-t border-gray-800/50" role="contentinfo">
+        <p class="text-sm">
+            Feito com <i data-lucide="heart" class="w-4 h-4 inline text-red-400"></i> por 
+            <a href="https://www.instagram.com/dev_inojoza_/" target="_blank" rel="noopener" class="text-indigo-400 hover:text-indigo-300 transition-colors">
+                Gabriel Inojoza
+            </a>
+        </p>
+    </footer>
+
+    <script src="public/js/scroll-top.js"></script>
+    <script src="public/js/script.js"></script>
+</body>
+</html>
