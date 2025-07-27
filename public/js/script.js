@@ -35,29 +35,58 @@
 
             // Funcionalidade de cópia com UX 
             const handleCopy = async (element, button) => {
-                if (!element.value.trim()) return;
-                
+                if (!element.value.trim() || button.dataset.isCopying === 'true') return;
+
                 try {
                     await navigator.clipboard.writeText(element.value);
+                    button.dataset.isCopying = 'true'; // Prevenir cliques duplos
+
+                    const currentSvg = button.querySelector('svg');
+                    const originalDataLucide = currentSvg.dataset.lucide; 
+
+                    // 1. Criar um novo elemento <i> para o ícone de "check"
+                    const checkIcon = document.createElement('i');
+                    checkIcon.setAttribute('data-lucide', 'check');
+                    checkIcon.classList.add('w-4', 'h-4'); 
+
+                    // 2. Substituir o <svg> existente pelo novo <i>
+                    if (currentSvg) {
+                        button.replaceChild(checkIcon, currentSvg);
+                    } else {
+                        button.appendChild(checkIcon); 
+                    }
                     
-                    const icon = button.querySelector('i');
-                    const originalDataLucide = icon.getAttribute('data-lucide');
-                    
-                    // Update icon and style
-                    icon.setAttribute('data-lucide', 'check');
-                    button.style.color = '#10b981';
-                    lucide.createIcons();
-                    
-                    // Reiniciar após 2 segundos
+                    button.style.color = '#10b981'; 
+                    lucide.createIcons(); 
+
+                    // 4. Reiniciar após 2 segundos
                     setTimeout(() => {
-                        icon.setAttribute('data-lucide', originalDataLucide);
-                        button.style.color = '';
-                        lucide.createIcons();
+                        const currentCheckSvg = button.querySelector('svg');
+
+                        // Criar um novo <i> para restaurar o ícone original
+                        const originalIcon = document.createElement('i');
+                        originalIcon.setAttribute('data-lucide', originalDataLucide);
+                        originalIcon.classList.add('w-4', 'h-4');
+
+                        // Substituir o <svg> de "check" pelo novo <i> do ícone original
+                        if (currentCheckSvg) {
+                            button.replaceChild(originalIcon, currentCheckSvg);
+                        } else {
+                            button.appendChild(originalIcon);
+                        }
+                        
+                        button.style.color = ''; 
+                        lucide.createIcons(); 
+                        
+                        delete button.dataset.isCopying; 
                     }, 2000);
+
                 } catch (err) {
-                    console.error('Failed to copy text: ', err);
+                    console.error('Falha ao copiar o texto: ', err);
+                    delete button.dataset.isCopying;
                 }
             };
+
 
             copyBeforeBtn.addEventListener('click', () => handleCopy(codeBeforeEl, copyBeforeBtn));
             copyAfterBtn.addEventListener('click', () => handleCopy(codeAfterEl, copyAfterBtn));
