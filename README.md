@@ -25,15 +25,27 @@ O CodeDiff Pro é uma ferramenta online que permite comparar dois trechos de có
 - **Acessibilidade**  
   Compatível com leitores de tela e navegação por teclado  
 
-## 🛠️ Tecnologias  
-```mermaid
-graph LR
-A[Frontend] --> B(HTML5)
-A --> C(Tailwind CSS)
-A --> D(JavaScript Vanilla)
-D --> E[jsdiff]
-D --> F[Lucide Icons]
-```
+## 🛠️ Stack Tecnológica
+
+<div align="center">
+  <h3>Tecnologias Principais</h3>
+  
+  <div style="display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin: 25px 0;">
+    <img src="https://skillicons.dev/icons?i=html" alt="HTML5" title="HTML5" width="50">
+    <img src="https://skillicons.dev/icons?i=css" alt="CSS3" title="CSS3" width="50">
+    <img src="https://skillicons.dev/icons?i=js" alt="JavaScript" title="JavaScript" width="50">
+    <img src="https://skillicons.dev/icons?i=tailwind" alt="Tailwind CSS" title="Tailwind CSS" width="50">
+  </div>
+
+  <h3>Bibliotecas & Ferramentas</h3>
+  
+  <div style="display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin: 25px 0;">
+    <img src="https://skillicons.dev/icons?i=github" alt="GitHub" title="GitHub" width="50">
+    <img src="https://skillicons.dev/icons?i=vscode" alt="VS Code" title="VS Code" width="50">
+    <img src="https://avatars.githubusercontent.com/u/6128107?s=200&v=4" alt="Lucide Icons" title="Lucide Icons" width="50" style="border-radius:50%">
+    <img src="https://camo.githubusercontent.com/6a46c3b24be5b6e9f1b0a2a0d9e3c9e0e1e0e1e0e/68747470733a2f2f6a73646966662e6769746875622e696f2f6a73646966662f6c6f676f2e706e67" alt="jsdiff" title="jsdiff" width="50">
+  </div>
+</div>
 
 ## 🚀 Como Usar  
 1. **Acesso online**:  
