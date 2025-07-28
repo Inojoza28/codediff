@@ -37,7 +37,7 @@ O CodeDiff Pro é uma ferramenta online que permite comparar dois trechos de có
     <img src="https://skillicons.dev/icons?i=tailwind" alt="Tailwind CSS" title="Tailwind CSS" width="50">
   </div>
 
-  <h3>Bibliotecas & Ferramentas</h3>
+  <h3>Ferramentas</h3>
   
   <div style="display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin: 25px 0;">
     <img src="https://skillicons.dev/icons?i=github" alt="GitHub" title="GitHub" width="50">
